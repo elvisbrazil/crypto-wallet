@@ -6,10 +6,7 @@
 
 ## ✨ Demo
 
-<video width="100%" controls>
-  <source src="https://miniostorage.kleankreative.com/api/v1/buckets/typebot/objects/download?preview=true&prefix=wallet-system.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Demo GIF](https://miniostorage.kleankreative.com/api/v1/buckets/typebot/objects/download?preview=true&prefix=dashboard.gif)
 
 A modern and secure digital wallet to manage your digital assets.
 
