@@ -6,8 +6,6 @@
 
 ## ✨ Demo
 
-https://github.com/elvisbrazil/crypto-wallet/assets/demo.gif
-
 <video width="100%" controls>
   <source src="https://miniostorage.kleankreative.com/api/v1/buckets/typebot/objects/download?preview=true&prefix=wallet-system.mp4" type="video/mp4">
   Your browser does not support the video tag.
