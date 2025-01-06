@@ -18,6 +18,13 @@ interface TokenData {
   value: number;
 }
 
+// Definir a interface Window para incluir ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 export function useWallet() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
@@ -62,7 +69,9 @@ export function useWallet() {
 
   const fetchTokenBalances = async (address: string) => {
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const ethereum = (window as any).ethereum;
+      if (!ethereum) throw new Error('Ethereum object not found');
+      const provider = new ethers.BrowserProvider(ethereum);
       
       // ABI mínimo para tokens ERC20
       const minABI = [
@@ -110,21 +119,25 @@ export function useWallet() {
 
         // Buscar balanço de cada token
         for (const tokenAddress of uniqueTokens) {
-          const contract = new ethers.Contract(tokenAddress, minABI, provider);
-          try {
-            const balance = await contract.balanceOf(address);
-            if (balance > 0) {
-              const symbol = await contract.symbol();
-              const name = await contract.name();
-              balances.push({
-                name,
-                symbol,
-                balance: balance.toString(),
-                value: 0 // TODO: Buscar preço do token
-              });
+          if (typeof tokenAddress === 'string') {
+            const contract = new ethers.Contract(tokenAddress, minABI, provider);
+            try {
+              const balance = await contract.balanceOf(address);
+              if (balance > 0) {
+                const symbol = await contract.symbol();
+                const name = await contract.name();
+                balances.push({
+                  name,
+                  symbol,
+                  balance: balance.toString(),
+                  value: 0 // TODO: Buscar preço do token
+                });
+              }
+            } catch (error) {
+              console.error(`Failed to fetch balance for token ${tokenAddress}:`, error);
             }
-          } catch (error) {
-            console.error(`Erro ao buscar token ${tokenAddress}:`, error);
+          } else {
+            console.error(`Invalid token address: ${tokenAddress}`);
           }
         }
 
@@ -329,5 +342,6 @@ export function useWallet() {
     balanceHistory,
     tokenBalances,
     fetchTokenBalances,
+    ethPrice,
   };
 }

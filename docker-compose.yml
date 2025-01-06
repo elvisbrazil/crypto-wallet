@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3015:3015"
+    networks:
+      - network_public
+    environment:
+      - NEXT_PUBLIC_COINGECKO_API_KEY=${NEXT_PUBLIC_COINGECKO_API_KEY}
+      - NEXT_PUBLIC_ETHERSCAN_API_KEY=${NEXT_PUBLIC_ETHERSCAN_API_KEY}
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.app.rule=Host(`mywallet.elvisgoncalves.com`)
+        - traefik.http.routers.app.entrypoints=websecure
+        - traefik.http.routers.app.tls.certresolver=letsencryptresolver
+        - traefik.http.services.app.loadbalancer.server.port=3015
+        - traefik.http.services.app.loadbalancer.passHostHeader=true
+        - traefik.http.routers.app.service=app
+
+networks:
+  network_public:
+    external: true
+    name: network_public

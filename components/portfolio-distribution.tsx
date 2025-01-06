@@ -5,6 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Sector, Tooltip } from 'recharts'
 import { usePortfolioData } from '@/hooks/usePortfolioData'
 
+
+type TokenBalance = {
+  name: string;
+  value: number;
+  color: string;
+};
+
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
@@ -23,12 +30,9 @@ const CustomLegend = ({ data }: { data: TokenBalance[] }) => {
   return (
     <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4 text-xs font-onest">
       {data.map((entry, index) => (
-        <li key={`item-${index}`} className="flex items-center gap-1">
-          <div 
-            className="w-2 h-2 rounded-sm" 
-            style={{ backgroundColor: entry.color }}
-          />
-          <span className="text-gray-600">{entry.name}</span>
+        <li key={`item-${index}`} className="flex items-center">
+          <span className="mr-2">{entry.name}</span>
+          <span>{entry.value}</span>
         </li>
       ))}
     </ul>

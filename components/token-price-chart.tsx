@@ -39,9 +39,15 @@ export function TokenPriceChart() {
         };
       });
 
+
+      type DailyData = {
+        value: number;
+      
+      };
+
       // Encontrar o índice do valor máximo
-      const maxPrice = Math.max(...dailyData.map(item => item.value));
-      const maxIdx = dailyData.findIndex(item => item.value === maxPrice);
+      const maxPrice = Math.max(...dailyData.map((item: DailyData) => item.value));
+      const maxIdx = dailyData.findIndex((item: DailyData) => item.value === maxPrice);
       
       setMaxValue(maxPrice);
       setMaxIndex(maxIdx);
@@ -59,6 +65,20 @@ export function TokenPriceChart() {
     const interval = setInterval(fetchEthPrice, 300000);
     return () => clearInterval(interval);
   }, []);
+
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-3 rounded-lg shadow-lg">
+          <p className="text-sm font-medium text-gray-900">{payload[0].name}</p>
+          <p className="text-sm text-gray-600">
+            <span className="font-medium">{payload[0].value.toFixed(2)}%</span> of portfolio
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card className="rounded-2xl shadow-sm border-0">
@@ -105,11 +125,13 @@ export function TokenPriceChart() {
                         <div className="text-xs text-gray-500 mb-1">{payload[0].payload.fullDate}</div>
                         <div className="flex items-center gap-2">
                           <DollarSign className="h-4 w-4 text-primary-blue" />
-                          <span>{payload[0].value.toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            maximumFractionDigits: 2
-                          })}</span>
+                          {payload && payload[0] && payload[0].value !== undefined && (
+                            <span>{payload[0].value.toLocaleString('en-US', {
+                              style: 'currency',
+                              currency: 'USD',
+                              maximumFractionDigits: 2
+                            })}</span>
+                          )}
                         </div>
                       </div>
                     );

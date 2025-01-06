@@ -32,8 +32,8 @@ export const useEthPriceData = () => {
         };
       });
 
-      const maxPrice = Math.max(...dailyData.map(item => item.value));
-      const maxIdx = dailyData.findIndex(item => item.value === maxPrice);
+      const maxPrice = Math.max(...dailyData.map((item: { value: number }) => item.value));
+      const maxIdx = dailyData.findIndex((item: { value: number }) => item.value === maxPrice);
       
       setMaxValue(maxPrice);
       setMaxIndex(maxIdx);

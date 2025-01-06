@@ -40,8 +40,13 @@ NEXT_PUBLIC_ETHERSCAN_API_KEY=
 
 # Start the development server
 npm run dev
-```
+```markdown
+# The development server will start on port 3015
+🌐 http://localhost:3015
 
+# Alternatively, you can use Docker to run the application
+🐳 `docker-compose up`
+```
 ## 🏗️ Project Structure
 
 ```

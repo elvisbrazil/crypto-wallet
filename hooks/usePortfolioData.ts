@@ -1,4 +1,4 @@
-import { useWallet } from '@/hooks/useWallet';
+import { useWallet } from './useWallet';
 
 interface TokenBalance {
   name: string;
